@@ -1,19 +1,10 @@
-// import { getVariableValues } from 'graphql/execution/values';
 import React from 'react';
-// import loadQuery from 'react-relay/lib/relay-hooks/loadQuery';
 import '../App.css';
-
-
-
-// const { useMutation } = require('react-relay')
-
-
-// const { graphql, usePreloadedQuery } = require('react-relay');
 
 class InputForm extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {value: ''};
+      this.state = {value: 'relay'};
   
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -27,7 +18,7 @@ class InputForm extends React.Component {
 
 
     handleSubmit(event) {
-      alert('输入的内容为: ' + this.state.value);
+      // alert('输入的内容为: ' + this.state.value);
 
       event.preventDefault();
       const data = this.state.value

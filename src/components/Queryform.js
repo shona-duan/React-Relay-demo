@@ -1,5 +1,6 @@
 import React from 'react';
 import '../App.css';
+// import UserComponent from './UserComponent';
 
 class QueryForm extends React.Component {
     constructor(props) {
@@ -12,21 +13,23 @@ class QueryForm extends React.Component {
   
     handleChange(event) {
       this.setState({value: event.target.value});
-    }
+    }  
   
     handleSubmit(event) {
       alert('查询的内容为: ' + this.state.value);
       event.preventDefault();
+      // const data = this.state.value;
+      
     }
   
     render() {
       return (
         <form onSubmit={this.handleSubmit} className="vertical">
           <label>
-            查询结果:
-            {/* <textarea type="text" value={this.state.value} onChange={this.handleChange} /> */}
+            片段查询:
+            <textarea type="text" value={this.state.value} onChange={this.handleChange} />
           </label>
-          {/* <input type="submit" value="Submit" /> */}
+          <input type="submit" value="Submit" />
         </form>
       );
     }

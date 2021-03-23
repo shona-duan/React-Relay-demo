@@ -1,99 +1,135 @@
-import React from 'react';
-import './App.css';
-// import fetchGraphQL from './fetchGraphQL';
-import graphql from 'babel-plugin-relay/macro';
-// import type { PreloadedQuery }
+import { Suspense } from 'react'
+import './App.css'
+import graphql from 'babel-plugin-relay/macro'
 import {
-  RelayEnvironmentProvider, usePreloadedQuery,
-  // loadQuery,
-  // usePreloadedQuery,
-} from 'react-relay/hooks';
-// eslint-disable-next-line
-// import type { PreloadedQuery } from 'react-relay';
-// import preloadQuery from 'react-relay/lib/relay-hooks/preloadQuery_DEPRECATED'
-import RelayEnvironment from './RelayEnvironment';
-import InputForm from './components/Inputform';
+  RelayEnvironmentProvider,
+  usePaginationFragment,
+  usePreloadedQuery,
+  useFragment
+} from 'react-relay'
+import RelayEnvironment from './RelayEnvironment'
+import InputForm from './components/Inputform'
 
-
-const { Suspense } = React;
-const {useQueryLoader} = require('react-relay');
+const { useQueryLoader } = require('react-relay')
 
 // Define a query
 const RepositoryNameQuery = graphql`
-  query AppRepositoryNameQuery($name: String!) {
-    repository(owner: "facebook", name: $name) {
-      name
-      createdAt
+  query AppRepositoryNameQuery($name: String!, $count: Int, $cursor: String) {
+    topic(name: $name) {
+      ...App_repository
     }
   }
-`;
+`
 
+function App (props) {
+  // useQueryLoader Hook
+  const [repositoryNameQueryRef, loadRepositoryNameQuery] = useQueryLoader(
+    RepositoryNameQuery
+  )
 
-let onSlect;
-function App(props) {
-  const [
-    repositoryNameQueryRef,
-    loadRepositoryNameQuery,
-  ] = useQueryLoader(
-    RepositoryNameQuery,
-  );
-
-  const onSelectRepositoryNameQuery = (data) => {
-    console.log(data);
-    loadRepositoryNameQuery(
-      {name: data}
-    );
-    
+  function changeValue (formValues) {
+    loadRepositoryNameQuery({ name: formValues, count: 1 })
   }
 
-  onSlect = onSelectRepositoryNameQuery;
-  if (repositoryNameQueryRef == null) {
-    console.log('111');
-    return (
-      <p>请输入查询内容</p>
-    )
-  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <Display queryref={repositoryNameQueryRef}></Display>
-        {/* <p>{props.repository.createdAt}</p> */}
-      </header>
-    </div>
-  );
-}
-
-
-function AppRoot(props) {
-    
-  function changeValue(props) {
-    
-    onSlect(props);
-    // console.log('111');
-  };
-  
-  return (
-    <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={'Loading...'}>
-        <App />
-      </Suspense>
+    <div className='App'>
       <div>
-        <InputForm onChange={changeValue}></InputForm>
-        
+        <InputForm
+          onChange={formValues => {
+            changeValue(formValues)
+            props?.onSubmit(formValues)
+          }}
+        />
       </div>
-    </RelayEnvironmentProvider>
-  );
-}
-function Display({queryref}) {
-  const data = usePreloadedQuery(RepositoryNameQuery,queryref);
-  return (
-    <div>
-      <p>{data.repository.name}</p>
-      <p>{data.repository.createdAt}</p>
+      <Suspense fallback={'Loading...'}>
+        <header className='App-header'>
+          {repositoryNameQueryRef === null ? (
+            <p>请输入查询内容</p>
+          ) : (
+            <Display queryref={repositoryNameQueryRef}></Display>
+          )}
+        </header>
+      </Suspense>
     </div>
-    
-    
   )
 }
 
-export default AppRoot;
+function AppRoot (props) {
+  return (
+    <RelayEnvironmentProvider environment={RelayEnvironment}>
+      <App
+        onSubmit={args => {
+          console.log(args)
+        }}
+      />
+    </RelayEnvironmentProvider>
+  )
+}
+
+const UserInfo = ({ user }) => {
+  const data = useFragment(
+    graphql`
+      fragment App_user on User {
+        id
+        email
+        name
+      }
+    `,
+    user
+  )
+
+  return <div>{data?.name} | {data?.email}</div>
+}
+
+const RepositoryInfo = ({ topic }) => {
+  const { data, loadNext } = usePaginationFragment(
+    graphql`
+      fragment App_repository on Topic
+        @refetchable(queryName: "RepositoryInfoPaginationQuery") {
+        name
+        stargazers(first: $count, after: $cursor)
+          @connection(key: "App_repository_stargazers") {
+          edges {
+            node {
+              id
+              createdAt
+              ...App_user
+            }
+          }
+        }
+      }
+    `,
+    topic
+  )
+  return (
+    <div>
+      <Suspense fallback={'Loading...'}>
+        <div>
+          {(data?.stargazers?.edges ?? []).map(({ node }) => {
+            return (
+              <div key={node?.id}>
+                <UserInfo user={node} />
+                <span>{node?.createdAt}</span>
+              </div>
+            )
+          })}
+        </div>
+      </Suspense>
+
+      <button
+        onClick={() => {
+          loadNext(1)
+        }}
+      >
+        Load more
+      </button>
+    </div>
+  )
+}
+
+function Display ({ queryref }) {
+  const data = usePreloadedQuery(RepositoryNameQuery, queryref)
+  return <RepositoryInfo topic={data?.topic} />
+}
+
+export default AppRoot
