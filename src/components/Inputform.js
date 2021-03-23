@@ -13,22 +13,14 @@ class InputForm extends React.Component {
     handleChange(event) {
       this.setState({value: event.target.value});
     }
-    
-
-
 
     handleSubmit(event) {
       // alert('输入的内容为: ' + this.state.value);
-
       event.preventDefault();
       const data = this.state.value
-      // loadQuery(data);
       this.props.onChange(data);
-      
-      
     }
-  
-
+    
     render() {
       return (
         <form onSubmit={this.handleSubmit}>

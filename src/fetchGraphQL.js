@@ -1,4 +1,3 @@
-// your-app-name/src/fetchGraphQL.js
 async function fetchGraphQL(text, variables) {
     const REACT_APP_GITHUB_AUTH_TOKEN = process.env.REACT_APP_GITHUB_AUTH_TOKEN;
   
