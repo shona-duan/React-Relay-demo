@@ -8,7 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type App_repository$ref = any;
+type RepositoryInfo$ref = any;
 export type RepositoryInfoPaginationQueryVariables = {|
   count?: ?number,
   cursor?: ?string,
@@ -16,7 +16,7 @@ export type RepositoryInfoPaginationQueryVariables = {|
 |};
 export type RepositoryInfoPaginationQueryResponse = {|
   +node: ?{|
-    +$fragmentRefs: App_repository$ref
+    +$fragmentRefs: RepositoryInfo$ref
   |}
 |};
 export type RepositoryInfoPaginationQuery = {|
@@ -34,19 +34,19 @@ query RepositoryInfoPaginationQuery(
 ) {
   node(id: $id) {
     __typename
-    ...App_repository
+    ...RepositoryInfo
     id
   }
 }
 
-fragment App_repository on Topic {
+fragment RepositoryInfo on Topic {
   name
   stargazers(first: $count, after: $cursor) {
     edges {
       node {
         id
         createdAt
-        ...App_user
+        ...UserInfo
         __typename
       }
       cursor
@@ -59,7 +59,7 @@ fragment App_repository on Topic {
   id
 }
 
-fragment App_user on User {
+fragment UserInfo on User {
   id
   email
   name
@@ -142,7 +142,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "App_repository"
+            "name": "RepositoryInfo"
           }
         ],
         "storageKey": null
@@ -258,7 +258,7 @@ return {
                 "args": (v5/*: any*/),
                 "filters": null,
                 "handle": "connection",
-                "key": "App_repository_stargazers",
+                "key": "RepositoryInfo_stargazers",
                 "kind": "LinkedHandle",
                 "name": "stargazers"
               }
@@ -272,16 +272,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4f0fb6478c0777b4b7a191588f088751",
+    "cacheID": "a53f31ee66240afd5b7e6cfd1ee070f6",
     "id": null,
     "metadata": {},
     "name": "RepositoryInfoPaginationQuery",
     "operationKind": "query",
-    "text": "query RepositoryInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...App_repository\n    id\n  }\n}\n\nfragment App_repository on Topic {\n  name\n  stargazers(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        createdAt\n        ...App_user\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n\nfragment App_user on User {\n  id\n  email\n  name\n}\n"
+    "text": "query RepositoryInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...RepositoryInfo\n    id\n  }\n}\n\nfragment RepositoryInfo on Topic {\n  name\n  stargazers(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        createdAt\n        ...UserInfo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n\nfragment UserInfo on User {\n  id\n  email\n  name\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0ed74ed70663779d590eeecff0528634';
+(node/*: any*/).hash = '7747c51979329472c565657e3d40302b';
 
 module.exports = node;

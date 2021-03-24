@@ -1,24 +1,23 @@
-.App-header {
+@import '~antd/dist/antd.css';
+
+body{
+  padding-top: 40px;
+  padding-left: 20px;
+}
+
+.App-section {
   text-align: center;
 }
 
 p {
   font-size: 32px;
 }
-
-.queryValue,
-.inputValue{
-  margin-left: 100px;
-  margin-bottom: 50px;
+Button{
+  margin-top: 20px;
+  margin-left: -800px;
 }
 
-.textarea1,
-.textarea2{
-  margin-top: 15px;
-  display: block;
+form{
+  margin-bottom: 30px;
+  margin-left: 250px;
 }
-
-.vertical {
-  vertical-align: middle;
-}
-

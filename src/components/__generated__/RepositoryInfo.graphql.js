@@ -8,28 +8,28 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
-type App_user$ref = any;
+type UserInfo$ref = any;
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type App_repository$ref: FragmentReference;
-declare export opaque type App_repository$fragmentType: App_repository$ref;
-export type App_repository = {|
+declare export opaque type RepositoryInfo$ref: FragmentReference;
+declare export opaque type RepositoryInfo$fragmentType: RepositoryInfo$ref;
+export type RepositoryInfo = {|
   +name: string,
   +stargazers: {|
     +edges: ?$ReadOnlyArray<?{|
       +node: {|
         +id: string,
         +createdAt: any,
-        +$fragmentRefs: App_user$ref,
+        +$fragmentRefs: UserInfo$ref,
       |}
     |}>
   |},
   +id: string,
-  +$refType: App_repository$ref,
+  +$refType: RepositoryInfo$ref,
 |};
-export type App_repository$data = App_repository;
-export type App_repository$key = {
-  +$data?: App_repository$data,
-  +$fragmentRefs: App_repository$ref,
+export type RepositoryInfo$data = RepositoryInfo;
+export type RepositoryInfo$key = {
+  +$data?: RepositoryInfo$data,
+  +$fragmentRefs: RepositoryInfo$ref,
   ...
 };
 */
@@ -83,7 +83,7 @@ return {
       "identifierField": "id"
     }
   },
-  "name": "App_repository",
+  "name": "RepositoryInfo",
   "selections": [
     {
       "alias": null,
@@ -97,7 +97,7 @@ return {
       "args": null,
       "concreteType": "StargazerConnection",
       "kind": "LinkedField",
-      "name": "__App_repository_stargazers_connection",
+      "name": "__RepositoryInfo_stargazers_connection",
       "plural": false,
       "selections": [
         {
@@ -134,7 +134,7 @@ return {
                 {
                   "args": null,
                   "kind": "FragmentSpread",
-                  "name": "App_user"
+                  "name": "UserInfo"
                 }
               ],
               "storageKey": null
@@ -184,6 +184,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0ed74ed70663779d590eeecff0528634';
+(node/*: any*/).hash = '7747c51979329472c565657e3d40302b';
 
 module.exports = node;

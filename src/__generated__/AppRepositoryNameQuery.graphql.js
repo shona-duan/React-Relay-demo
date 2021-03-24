@@ -8,7 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type App_repository$ref = any;
+type RepositoryInfo$ref = any;
 export type AppRepositoryNameQueryVariables = {|
   name: string,
   count?: ?number,
@@ -16,7 +16,7 @@ export type AppRepositoryNameQueryVariables = {|
 |};
 export type AppRepositoryNameQueryResponse = {|
   +topic: ?{|
-    +$fragmentRefs: App_repository$ref
+    +$fragmentRefs: RepositoryInfo$ref
   |}
 |};
 export type AppRepositoryNameQuery = {|
@@ -33,19 +33,19 @@ query AppRepositoryNameQuery(
   $cursor: String
 ) {
   topic(name: $name) {
-    ...App_repository
+    ...RepositoryInfo
     id
   }
 }
 
-fragment App_repository on Topic {
+fragment RepositoryInfo on Topic {
   name
   stargazers(first: $count, after: $cursor) {
     edges {
       node {
         id
         createdAt
-        ...App_user
+        ...UserInfo
         __typename
       }
       cursor
@@ -58,7 +58,7 @@ fragment App_repository on Topic {
   id
 }
 
-fragment App_user on User {
+fragment UserInfo on User {
   id
   email
   name
@@ -136,7 +136,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "App_repository"
+            "name": "RepositoryInfo"
           }
         ],
         "storageKey": null
@@ -257,7 +257,7 @@ return {
             "args": (v5/*: any*/),
             "filters": null,
             "handle": "connection",
-            "key": "App_repository_stargazers",
+            "key": "RepositoryInfo_stargazers",
             "kind": "LinkedHandle",
             "name": "stargazers"
           },
@@ -268,16 +268,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f7b1f6caa4c0f0cd8c05ea0f60fa83d1",
+    "cacheID": "e695f64056efbbc693b475bedb843cf9",
     "id": null,
     "metadata": {},
     "name": "AppRepositoryNameQuery",
     "operationKind": "query",
-    "text": "query AppRepositoryNameQuery(\n  $name: String!\n  $count: Int\n  $cursor: String\n) {\n  topic(name: $name) {\n    ...App_repository\n    id\n  }\n}\n\nfragment App_repository on Topic {\n  name\n  stargazers(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        createdAt\n        ...App_user\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n\nfragment App_user on User {\n  id\n  email\n  name\n}\n"
+    "text": "query AppRepositoryNameQuery(\n  $name: String!\n  $count: Int\n  $cursor: String\n) {\n  topic(name: $name) {\n    ...RepositoryInfo\n    id\n  }\n}\n\nfragment RepositoryInfo on Topic {\n  name\n  stargazers(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        createdAt\n        ...UserInfo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n\nfragment UserInfo on User {\n  id\n  email\n  name\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '919b40c84d905566c8099835d4546f34';
+(node/*: any*/).hash = '165e447f0819386f57f6a4e4f51af979';
 
 module.exports = node;
