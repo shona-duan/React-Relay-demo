@@ -1,11 +1,10 @@
 import React from 'react'
-import { Button } from 'antd'
 import '../App.css'
 
 class InputForm extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { value: 'relay' }
+    this.state = { value: '' }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
