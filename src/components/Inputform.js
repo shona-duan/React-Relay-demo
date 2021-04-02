@@ -1,42 +1,57 @@
-import React from 'react'
-import '../App.css'
+import React from 'react';
+import 'antd/dist/antd.css';
+// import './index.css';
+import { Form, Input, Button } from 'antd';
+const layout = {
+  labelCol: {
+    span: 8,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+const tailLayout = {
+  wrapperCol: {
+    offset: 8,
+    span: 16,
+  },
+};
 
-class InputForm extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { value: '' }
+const InputForm = () => {
 
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
+  const onFinish = (values) => {
+    console.log('Success:', values);
+    // this.onChange(values)
+  };
 
-  handleChange (event) {
-    this.setState({ value: event.target.value })
-  }
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
 
-  handleSubmit (event) {
-    // alert('输入的内容为: ' + this.state.value);
-    event.preventDefault()
-    const data = this.state.value
-    this.props.onChange(data)
-  }
+  return (
+    <Form
+      {...layout}
+      name="basic"
+      initialValues={{
+        remember: true,
+      }}
+      onFinish={onFinish}
+      onFinishFailed={onFinishFailed}
+    >
+      <Form.Item
+        label="输入内容"
+        name="Username"
+      >
+        <Input />
+      </Form.Item>
 
-  render () {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          <input
-            type='text'
-            value={this.state.value}
-            placeholder="请输入查询内容"
-            style={{ width: 150, marginRight: 16 }}
-            onChange={this.handleChange}
-          />
-        </label>
-        <input type='submit' value='Submit' />
-      </form>
-    )
-  }
-}
+      <Form.Item {...tailLayout}>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
+  );
+};
 
 export default InputForm

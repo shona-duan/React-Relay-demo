@@ -7,7 +7,7 @@ import {
   useQueryLoader
 } from 'react-relay'
 import RelayEnvironment from './RelayEnvironment'
-import InputForm from './components/Inputform'
+import InputForm from './components/InputForm'
 import RepositoryInfo from './components/RepositoryInfo'
 
 // Define a query
