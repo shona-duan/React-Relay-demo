@@ -31,7 +31,7 @@ function App (props) {
 
   return (
     <div className='App'>
-      <div>
+      <div className="App-query">
         <InputForm
           onChange={formValues => {
             changeValue(formValues)

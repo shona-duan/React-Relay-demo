@@ -2,26 +2,12 @@ import React from 'react';
 import 'antd/dist/antd.css';
 // import './index.css';
 import { Form, Input, Button } from 'antd';
-const layout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-const tailLayout = {
-  wrapperCol: {
-    offset: 8,
-    span: 16,
-  },
-};
 
-const InputForm = () => {
+const InputForm = ({onChange}) => {
 
   const onFinish = (values) => {
-    console.log('Success:', values);
-    // this.onChange(values)
+    console.log('Success:', values.queries);
+    onChange(values.queries)
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -30,7 +16,8 @@ const InputForm = () => {
 
   return (
     <Form
-      {...layout}
+      // {...layout}
+      layout="inline"
       name="basic"
       initialValues={{
         remember: true,
@@ -40,12 +27,17 @@ const InputForm = () => {
     >
       <Form.Item
         label="输入内容"
-        name="Username"
+        name="queries"
+        rules={[
+          {
+            required: true,
+            message: 'Please input your queries!',
+          },
+        ]}
       >
         <Input />
       </Form.Item>
-
-      <Form.Item {...tailLayout}>
+      <Form.Item >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>

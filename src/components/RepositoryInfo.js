@@ -1,12 +1,11 @@
-import { Suspense } from 'react'
+import { Suspense } from 'react';
 import graphql from 'babel-plugin-relay/macro'
-import { usePaginationFragment } from 'react-relay'
-import { Button } from 'antd'
-import { Container, Row, Col } from 'react-grid-system'
-import '../App.css'
+import { usePaginationFragment } from 'react-relay';
+import { Button, Row, Col } from 'antd';
+import '../App.css';
+import UserInfo from './UserInfo';
 
-import UserInfo from './UserInfo'
-
+const style = { background: "#E8F0FE", padding: '5px 0' };
 const RepositoryInfo = ({ topic }) => {
   const { data, loadNext } = usePaginationFragment(
     graphql`
@@ -31,25 +30,25 @@ const RepositoryInfo = ({ topic }) => {
     <div>
       <Suspense fallback={'Loading...'}>
         <div>
-          <Container fluid>
-            <Row debug style={{ width: '700px' }} justify="center">
-              <Col debug>ID | Email</Col>
-              <Col debug>createdAt</Col>
+          
+            <Row>
+              <Col span={12} style={style}>ID | Email</Col>
+              <Col span={12} style={style}>createdAt</Col>
             </Row>
-          </Container>
+          
           {(data?.stargazers?.edges ?? []).map(({ node }) => {
             return (
               <div key={node?.id}>
                 {/* <UserInfo user={node} />
                 <span>{node?.createdAt}</span> */}
-                <Container fluid>
-                  <Row debug style={{ width: '700px' }} justify="center">
-                    <Col debug>
+                
+                  <Row >
+                    <Col span={12} style={style}>
                       <UserInfo user={node} />
                     </Col>
-                    <Col debug>{node?.createdAt}</Col>
+                    <Col span={12} style={style}>{node?.createdAt}</Col>
                   </Row>
-                </Container>
+                
               </div>
             )
           })}

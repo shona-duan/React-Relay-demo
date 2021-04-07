@@ -5,19 +5,27 @@ body{
   padding-left: 20px;
 }
 
-.App-section {
+.App {
+  width: 600px;
+  margin: 0 auto;
+}
+
+/* .App-query {
   text-align: center;
+} */
+
+.App-section {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.App-section Button {
+  margin-top: 20px;
 }
 
 p {
   font-size: 32px;
 }
-/* Button{
-  margin-top: 20px;
-  margin-left: -800px;
-} */
 
-/* form{
-  margin-bottom: 30px;
-  margin-left: 250px;
-} */
+
