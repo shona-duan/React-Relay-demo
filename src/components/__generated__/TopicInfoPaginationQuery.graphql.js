@@ -8,45 +8,46 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-type RepositoryInfo$ref = any;
-export type RepositoryInfoPaginationQueryVariables = {|
+type TopicInfo$ref = any;
+export type TopicInfoPaginationQueryVariables = {|
   count?: ?number,
   cursor?: ?string,
   id: string,
 |};
-export type RepositoryInfoPaginationQueryResponse = {|
+export type TopicInfoPaginationQueryResponse = {|
   +node: ?{|
-    +$fragmentRefs: RepositoryInfo$ref
+    +$fragmentRefs: TopicInfo$ref
   |}
 |};
-export type RepositoryInfoPaginationQuery = {|
-  variables: RepositoryInfoPaginationQueryVariables,
-  response: RepositoryInfoPaginationQueryResponse,
+export type TopicInfoPaginationQuery = {|
+  variables: TopicInfoPaginationQueryVariables,
+  response: TopicInfoPaginationQueryResponse,
 |};
 */
 
 
 /*
-query RepositoryInfoPaginationQuery(
+query TopicInfoPaginationQuery(
   $count: Int
   $cursor: String
   $id: ID!
 ) {
   node(id: $id) {
     __typename
-    ...RepositoryInfo
+    ...TopicInfo
     id
   }
 }
 
-fragment RepositoryInfo on Topic {
-  name
-  stargazers(first: $count, after: $cursor) {
+fragment TopicInfo on Repository {
+  repositoryTopics(first: $count, after: $cursor) {
     edges {
       node {
+        topic {
+          id
+          name
+        }
         id
-        createdAt
-        ...UserInfo
         __typename
       }
       cursor
@@ -57,12 +58,6 @@ fragment RepositoryInfo on Topic {
     }
   }
   id
-}
-
-fragment UserInfo on User {
-  id
-  email
-  name
 }
 */
 
@@ -105,14 +100,7 @@ v3 = {
   "name": "id",
   "storageKey": null
 },
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v5 = [
+v4 = [
   {
     "kind": "Variable",
     "name": "after",
@@ -129,7 +117,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "RepositoryInfoPaginationQuery",
+    "name": "TopicInfoPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -142,7 +130,7 @@ return {
           {
             "args": null,
             "kind": "FragmentSpread",
-            "name": "RepositoryInfo"
+            "name": "TopicInfo"
           }
         ],
         "storageKey": null
@@ -155,7 +143,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "RepositoryInfoPaginationQuery",
+    "name": "TopicInfoPaginationQuery",
     "selections": [
       {
         "alias": null,
@@ -170,19 +158,18 @@ return {
           {
             "kind": "InlineFragment",
             "selections": [
-              (v4/*: any*/),
               {
                 "alias": null,
-                "args": (v5/*: any*/),
-                "concreteType": "StargazerConnection",
+                "args": (v4/*: any*/),
+                "concreteType": "RepositoryTopicConnection",
                 "kind": "LinkedField",
-                "name": "stargazers",
+                "name": "repositoryTopics",
                 "plural": false,
                 "selections": [
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "StargazerEdge",
+                    "concreteType": "RepositoryTopicEdge",
                     "kind": "LinkedField",
                     "name": "edges",
                     "plural": true,
@@ -190,27 +177,31 @@ return {
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "User",
+                        "concreteType": "RepositoryTopic",
                         "kind": "LinkedField",
                         "name": "node",
                         "plural": false,
                         "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Topic",
+                            "kind": "LinkedField",
+                            "name": "topic",
+                            "plural": false,
+                            "selections": [
+                              (v3/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "name",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          },
                           (v3/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "createdAt",
-                            "storageKey": null
-                          },
-                          {
-                            "alias": null,
-                            "args": null,
-                            "kind": "ScalarField",
-                            "name": "email",
-                            "storageKey": null
-                          },
-                          (v4/*: any*/),
                           (v2/*: any*/)
                         ],
                         "storageKey": null
@@ -255,15 +246,15 @@ return {
               },
               {
                 "alias": null,
-                "args": (v5/*: any*/),
+                "args": (v4/*: any*/),
                 "filters": null,
                 "handle": "connection",
-                "key": "RepositoryInfo_stargazers",
+                "key": "TopicInfo_repositoryTopics",
                 "kind": "LinkedHandle",
-                "name": "stargazers"
+                "name": "repositoryTopics"
               }
             ],
-            "type": "Topic",
+            "type": "Repository",
             "abstractKey": null
           }
         ],
@@ -272,16 +263,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "a53f31ee66240afd5b7e6cfd1ee070f6",
+    "cacheID": "ddc290d1f0b21432bce079c8b80cdae5",
     "id": null,
     "metadata": {},
-    "name": "RepositoryInfoPaginationQuery",
+    "name": "TopicInfoPaginationQuery",
     "operationKind": "query",
-    "text": "query RepositoryInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...RepositoryInfo\n    id\n  }\n}\n\nfragment RepositoryInfo on Topic {\n  name\n  stargazers(first: $count, after: $cursor) {\n    edges {\n      node {\n        id\n        createdAt\n        ...UserInfo\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n\nfragment UserInfo on User {\n  id\n  email\n  name\n}\n"
+    "text": "query TopicInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TopicInfo\n    id\n  }\n}\n\nfragment TopicInfo on Repository {\n  repositoryTopics(first: $count, after: $cursor) {\n    edges {\n      node {\n        topic {\n          id\n          name\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '7747c51979329472c565657e3d40302b';
+(node/*: any*/).hash = 'ed120fa0c299030acc612635820e409e';
 
 module.exports = node;

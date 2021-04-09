@@ -15,9 +15,14 @@ body{
 } */
 
 .App-section {
+  display: flex;
   margin-top: 20px;
   margin-bottom: 20px;
   text-align: center;
+}
+
+.App-section div {
+  flex: 1;
 }
 
 .App-section Button {

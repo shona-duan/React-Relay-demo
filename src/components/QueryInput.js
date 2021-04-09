@@ -1,13 +1,12 @@
 import React from 'react';
 import 'antd/dist/antd.css';
-// import './index.css';
 import { Form, Input, Button } from 'antd';
 
-const InputForm = ({onChange}) => {
+const QueryInput = ({onChange}) => {
 
   const onFinish = (values) => {
     console.log('Success:', values.queries);
-    onChange(values.queries)
+    onChange(values.queries);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -16,7 +15,6 @@ const InputForm = ({onChange}) => {
 
   return (
     <Form
-      // {...layout}
       layout="inline"
       name="basic"
       initialValues={{
@@ -46,4 +44,4 @@ const InputForm = ({onChange}) => {
   );
 };
 
-export default InputForm
+export default QueryInput

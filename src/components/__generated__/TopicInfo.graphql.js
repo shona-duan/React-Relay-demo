@@ -8,28 +8,27 @@
 
 /*::
 import type { ReaderFragment } from 'relay-runtime';
-type UserInfo$ref = any;
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type RepositoryInfo$ref: FragmentReference;
-declare export opaque type RepositoryInfo$fragmentType: RepositoryInfo$ref;
-export type RepositoryInfo = {|
-  +name: string,
-  +stargazers: {|
+declare export opaque type TopicInfo$ref: FragmentReference;
+declare export opaque type TopicInfo$fragmentType: TopicInfo$ref;
+export type TopicInfo = {|
+  +repositoryTopics: {|
     +edges: ?$ReadOnlyArray<?{|
-      +node: {|
-        +id: string,
-        +createdAt: any,
-        +$fragmentRefs: UserInfo$ref,
+      +node: ?{|
+        +topic: {|
+          +id: string,
+          +name: string,
+        |}
       |}
     |}>
   |},
   +id: string,
-  +$refType: RepositoryInfo$ref,
+  +$refType: TopicInfo$ref,
 |};
-export type RepositoryInfo$data = RepositoryInfo;
-export type RepositoryInfo$key = {
-  +$data?: RepositoryInfo$data,
-  +$fragmentRefs: RepositoryInfo$ref,
+export type TopicInfo$data = TopicInfo;
+export type TopicInfo$key = {
+  +$data?: TopicInfo$data,
+  +$fragmentRefs: TopicInfo$ref,
   ...
 };
 */
@@ -37,7 +36,7 @@ export type RepositoryInfo$key = {
 
 const node/*: ReaderFragment*/ = (function(){
 var v0 = [
-  "stargazers"
+  "repositoryTopics"
 ],
 v1 = {
   "alias": null,
@@ -79,31 +78,24 @@ return {
       "fragmentPathInResult": [
         "node"
       ],
-      "operation": require('./RepositoryInfoPaginationQuery.graphql.js'),
+      "operation": require('./TopicInfoPaginationQuery.graphql.js'),
       "identifierField": "id"
     }
   },
-  "name": "RepositoryInfo",
+  "name": "TopicInfo",
   "selections": [
     {
-      "alias": null,
+      "alias": "repositoryTopics",
       "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    {
-      "alias": "stargazers",
-      "args": null,
-      "concreteType": "StargazerConnection",
+      "concreteType": "RepositoryTopicConnection",
       "kind": "LinkedField",
-      "name": "__RepositoryInfo_stargazers_connection",
+      "name": "__TopicInfo_repositoryTopics_connection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "StargazerEdge",
+          "concreteType": "RepositoryTopicEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -111,17 +103,28 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "User",
+              "concreteType": "RepositoryTopic",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
               "selections": [
-                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "createdAt",
+                  "concreteType": "Topic",
+                  "kind": "LinkedField",
+                  "name": "topic",
+                  "plural": false,
+                  "selections": [
+                    (v1/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 },
                 {
@@ -130,11 +133,6 @@ return {
                   "kind": "ScalarField",
                   "name": "__typename",
                   "storageKey": null
-                },
-                {
-                  "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "UserInfo"
                 }
               ],
               "storageKey": null
@@ -179,11 +177,11 @@ return {
     },
     (v1/*: any*/)
   ],
-  "type": "Topic",
+  "type": "Repository",
   "abstractKey": null
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '7747c51979329472c565657e3d40302b';
+(node/*: any*/).hash = 'ed120fa0c299030acc612635820e409e';
 
 module.exports = node;
