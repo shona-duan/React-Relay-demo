@@ -40,6 +40,7 @@ query TopicInfoPaginationQuery(
 }
 
 fragment TopicInfo on Repository {
+  updatedAt
   repositoryTopics(first: $count, after: $cursor) {
     edges {
       node {
@@ -160,6 +161,13 @@ return {
             "selections": [
               {
                 "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "updatedAt",
+                "storageKey": null
+              },
+              {
+                "alias": null,
                 "args": (v4/*: any*/),
                 "concreteType": "RepositoryTopicConnection",
                 "kind": "LinkedField",
@@ -263,16 +271,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ddc290d1f0b21432bce079c8b80cdae5",
+    "cacheID": "65c52e0686a69e96adb9d0d805dadc86",
     "id": null,
     "metadata": {},
     "name": "TopicInfoPaginationQuery",
     "operationKind": "query",
-    "text": "query TopicInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TopicInfo\n    id\n  }\n}\n\nfragment TopicInfo on Repository {\n  repositoryTopics(first: $count, after: $cursor) {\n    edges {\n      node {\n        topic {\n          id\n          name\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
+    "text": "query TopicInfoPaginationQuery(\n  $count: Int\n  $cursor: String\n  $id: ID!\n) {\n  node(id: $id) {\n    __typename\n    ...TopicInfo\n    id\n  }\n}\n\nfragment TopicInfo on Repository {\n  updatedAt\n  repositoryTopics(first: $count, after: $cursor) {\n    edges {\n      node {\n        topic {\n          id\n          name\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ed120fa0c299030acc612635820e409e';
+(node/*: any*/).hash = 'a0da01adf9b9f4a4cb9aeb2f814331a9';
 
 module.exports = node;

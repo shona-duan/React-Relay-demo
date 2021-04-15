@@ -2,11 +2,11 @@ import React from 'react';
 import 'antd/dist/antd.css';
 import { Form, Input, Button } from 'antd';
 
-const QueryInput = ({onChange}) => {
+const QueryInput = ({onFinish: propOnFinish}) => {
 
   const onFinish = (values) => {
     console.log('Success:', values.queries);
-    onChange(values.queries);
+    propOnFinish?.(values.queries);
   };
 
   const onFinishFailed = (errorInfo) => {

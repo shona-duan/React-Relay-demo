@@ -9,17 +9,16 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 type StargazersSearch$ref = any;
-type TopicInfo$ref = any;
-export type AppRepositoryNameQueryVariables = {|
+export type StargazersSearchQueryVariables = {|
   query: string,
   count?: ?number,
   cursor?: ?string,
 |};
-export type AppRepositoryNameQueryResponse = {|
+export type StargazersSearchQueryResponse = {|
   +search: {|
     +nodes: ?$ReadOnlyArray<?({|
       +__typename: "Repository",
-      +$fragmentRefs: TopicInfo$ref & StargazersSearch$ref,
+      +$fragmentRefs: StargazersSearch$ref,
     |} | {|
       // This will never be '%other', but we need some
       // value in case none of the concrete values match.
@@ -27,24 +26,22 @@ export type AppRepositoryNameQueryResponse = {|
     |})>
   |}
 |};
-export type AppRepositoryNameQuery = {|
-  variables: AppRepositoryNameQueryVariables,
-  response: AppRepositoryNameQueryResponse,
+export type StargazersSearchQuery = {|
+  variables: StargazersSearchQueryVariables,
+  response: StargazersSearchQueryResponse,
 |};
 */
 
 
 /*
-query AppRepositoryNameQuery(
+query StargazersSearchQuery(
   $query: String!
-  $count: Int
   $cursor: String
 ) {
   search(query: $query, type: REPOSITORY, first: 1) {
     nodes {
       __typename
       ... on Repository {
-        ...TopicInfo
         ...StargazersSearch_1G22uz
       }
       ... on Node {
@@ -70,28 +67,6 @@ fragment StargazersSearch_1G22uz on Repository {
       hasNextPage
     }
   }
-}
-
-fragment TopicInfo on Repository {
-  updatedAt
-  repositoryTopics(first: $count, after: $cursor) {
-    edges {
-      node {
-        topic {
-          id
-          name
-        }
-        id
-        __typename
-      }
-      cursor
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-  }
-  id
 }
 */
 
@@ -135,73 +110,25 @@ v4 = {
   "name": "__typename",
   "storageKey": null
 },
-v5 = {
-  "kind": "Variable",
-  "name": "after",
-  "variableName": "cursor"
-},
-v6 = [
-  (v5/*: any*/),
+v5 = [
   {
     "kind": "Variable",
-    "name": "first",
-    "variableName": "count"
-  }
-],
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "cursor",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "PageInfo",
-  "kind": "LinkedField",
-  "name": "pageInfo",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "endCursor",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "hasNextPage",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
-v11 = [
-  (v5/*: any*/),
+    "name": "after",
+    "variableName": "cursor"
+  },
   {
     "kind": "Literal",
     "name": "first",
     "value": 2
   }
-];
+],
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -211,7 +138,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "AppRepositoryNameQuery",
+    "name": "StargazersSearchQuery",
     "selections": [
       {
         "alias": null,
@@ -233,11 +160,6 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  {
-                    "args": null,
-                    "kind": "FragmentSpread",
-                    "name": "TopicInfo"
-                  },
                   {
                     "args": [
                       {
@@ -276,7 +198,7 @@ return {
       (v1/*: any*/)
     ],
     "kind": "Operation",
-    "name": "AppRepositoryNameQuery",
+    "name": "StargazersSearchQuery",
     "selections": [
       {
         "alias": null,
@@ -300,74 +222,7 @@ return {
                 "selections": [
                   {
                     "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "updatedAt",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": (v6/*: any*/),
-                    "concreteType": "RepositoryTopicConnection",
-                    "kind": "LinkedField",
-                    "name": "repositoryTopics",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "RepositoryTopicEdge",
-                        "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
-                        "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "RepositoryTopic",
-                            "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Topic",
-                                "kind": "LinkedField",
-                                "name": "topic",
-                                "plural": false,
-                                "selections": [
-                                  (v7/*: any*/),
-                                  (v8/*: any*/)
-                                ],
-                                "storageKey": null
-                              },
-                              (v7/*: any*/),
-                              (v4/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v9/*: any*/)
-                        ],
-                        "storageKey": null
-                      },
-                      (v10/*: any*/)
-                    ],
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": (v6/*: any*/),
-                    "filters": null,
-                    "handle": "connection",
-                    "key": "TopicInfo_repositoryTopics",
-                    "kind": "LinkedHandle",
-                    "name": "repositoryTopics"
-                  },
-                  (v7/*: any*/),
-                  {
-                    "alias": null,
-                    "args": (v11/*: any*/),
+                    "args": (v5/*: any*/),
                     "concreteType": "StargazerConnection",
                     "kind": "LinkedField",
                     "name": "stargazers",
@@ -389,23 +244,59 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v7/*: any*/),
-                              (v8/*: any*/),
+                              (v6/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "name",
+                                "storageKey": null
+                              },
                               (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/)
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "cursor",
+                            "storageKey": null
+                          }
                         ],
                         "storageKey": null
                       },
-                      (v10/*: any*/)
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "PageInfo",
+                        "kind": "LinkedField",
+                        "name": "pageInfo",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "endCursor",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "hasNextPage",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
                     ],
                     "storageKey": null
                   },
                   {
                     "alias": null,
-                    "args": (v11/*: any*/),
+                    "args": (v5/*: any*/),
                     "filters": null,
                     "handle": "connection",
                     "key": "StargazersSearch_stargazers",
@@ -419,7 +310,7 @@ return {
               {
                 "kind": "InlineFragment",
                 "selections": [
-                  (v7/*: any*/)
+                  (v6/*: any*/)
                 ],
                 "type": "Node",
                 "abstractKey": "__isNode"
@@ -433,16 +324,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b0222485c398de5a90602d7caa693281",
+    "cacheID": "4c8402cc76cf3ab23bb9d2b1fa5732ae",
     "id": null,
     "metadata": {},
-    "name": "AppRepositoryNameQuery",
+    "name": "StargazersSearchQuery",
     "operationKind": "query",
-    "text": "query AppRepositoryNameQuery(\n  $query: String!\n  $count: Int\n  $cursor: String\n) {\n  search(query: $query, type: REPOSITORY, first: 1) {\n    nodes {\n      __typename\n      ... on Repository {\n        ...TopicInfo\n        ...StargazersSearch_1G22uz\n      }\n      ... on Node {\n        __isNode: __typename\n        id\n      }\n    }\n  }\n}\n\nfragment StargazersSearch_1G22uz on Repository {\n  stargazers(first: 2, after: $cursor) {\n    edges {\n      node {\n        id\n        name\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment TopicInfo on Repository {\n  updatedAt\n  repositoryTopics(first: $count, after: $cursor) {\n    edges {\n      node {\n        topic {\n          id\n          name\n        }\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n  id\n}\n"
+    "text": "query StargazersSearchQuery(\n  $query: String!\n  $cursor: String\n) {\n  search(query: $query, type: REPOSITORY, first: 1) {\n    nodes {\n      __typename\n      ... on Repository {\n        ...StargazersSearch_1G22uz\n      }\n      ... on Node {\n        __isNode: __typename\n        id\n      }\n    }\n  }\n}\n\nfragment StargazersSearch_1G22uz on Repository {\n  stargazers(first: 2, after: $cursor) {\n    edges {\n      node {\n        id\n        name\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '6afba9d6df6ec3b38be19e35ce90f1fd';
+(node/*: any*/).hash = '43611761a75e2e034fb63219ebb1aced';
 
 module.exports = node;

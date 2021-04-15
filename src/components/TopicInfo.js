@@ -10,6 +10,7 @@ const TopicInfo = ({ topic }) => {
     graphql`
       fragment TopicInfo on Repository
         @refetchable(queryName: "TopicInfoPaginationQuery") {
+        updatedAt
         repositoryTopics(first: $count, after: $cursor)
           @connection(key: "TopicInfo_repositoryTopics") {
           edges {
@@ -30,22 +31,15 @@ const TopicInfo = ({ topic }) => {
       <Suspense fallback={'Loading...'}>
         <div>
           <Row>
-            {/* <Col span={12} style={style}>ID | Email</Col> */}
-            {/* <Col span={8} style={style}>Last Update Time</Col> */}
-            <Col span={8} style={style}>Related topics</Col>
-            {/* <Col span={8} style={style}>createdAt</Col> */}
+            <Col span={12} style={style}>Related topics</Col>
+            <Col span={12} style={style}>Last Update Time</Col>
           </Row>
           {(data?.repositoryTopics?.edges ?? []).map(({ node }) => {
             return (
               <div key={node?.topic?.id}>
-                {/* <UserInfo user={node} />
-                <span>{node?.createdAt}</span> */}
                   <Row >
-                    {/* <Col span={8} style={style}>
-                      {topic?.}
-                    </Col> */}
-                    <Col span={8} style={style}>{node?.topic?.name}</Col>
-                    {/* <Col span={8} style={style}>{topic?.createdAt}</Col> */}
+                    <Col span={12} style={style}>{node?.topic?.name}</Col>
+                    <Col span={12} style={style}>{data?.updatedAt}</Col>
                   </Row>
               </div>
             )
@@ -56,8 +50,7 @@ const TopicInfo = ({ topic }) => {
       <Button
         type='primary'
         onClick={() => {
-          loadNext(1)
-          // console.log(data?.repositoryTopics?.edges)
+          loadNext(2)
         }}
       >
         Load more

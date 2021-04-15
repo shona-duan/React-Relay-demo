@@ -12,6 +12,7 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type TopicInfo$ref: FragmentReference;
 declare export opaque type TopicInfo$fragmentType: TopicInfo$ref;
 export type TopicInfo = {|
+  +updatedAt: any,
   +repositoryTopics: {|
     +edges: ?$ReadOnlyArray<?{|
       +node: ?{|
@@ -84,6 +85,13 @@ return {
   },
   "name": "TopicInfo",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "updatedAt",
+      "storageKey": null
+    },
     {
       "alias": "repositoryTopics",
       "args": null,
@@ -182,6 +190,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ed120fa0c299030acc612635820e409e';
+(node/*: any*/).hash = 'a0da01adf9b9f4a4cb9aeb2f814331a9';
 
 module.exports = node;
